@@ -358,6 +358,14 @@ typedef void (^MBProgressHUDCompletionBlock)();
  */
 @property (assign) float minShowTime;
 
+
+/**
+ * The duration (in seconds) of the show and hide animations. 
+ * Changing this value will not affect animations in progress.
+ * Defaults to 0.3 seconds.
+ */
+@property (assign) NSTimeInterval animationDuration;
+
 /**
  * Indicates that the executed operation is in progress. Needed for correct graceTime operation.
  * If you don't set a graceTime (different than 0.0) this does nothing.
