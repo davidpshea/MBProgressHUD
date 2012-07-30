@@ -399,6 +399,12 @@ typedef void (^MBProgressHUDCompletionBlock)();
  */
 @property (assign, getter = isSquare) BOOL square;
 
+/**
+ * Blocks touches from reaching the containing view. 
+ * Defaults to YES. 
+ */
+@property (assign) BOOL blockTouches;
+
 @end
 
 

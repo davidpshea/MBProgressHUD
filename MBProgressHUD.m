@@ -85,6 +85,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 @synthesize minShowTimer;
 @synthesize taskInProgress;
 @synthesize removeFromSuperViewOnHide;
+@synthesize blockTouches;
 @synthesize customView;
 @synthesize showStarted;
 @synthesize mode;
@@ -171,6 +172,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 		self.removeFromSuperViewOnHide = NO;
 		self.minSize = CGSizeZero;
 		self.square = NO;
+        self.blockTouches = YES;
 		self.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin 
 								| UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 
@@ -714,6 +716,19 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 	if (animated) {
 		[UIView commitAnimations];
 	}
+}
+
+#pragma mark - Touch Handling
+
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
+{
+    if (self.blockTouches) {
+        // Capture all touches in the superview
+        return [self.superview pointInside:[self convertPoint:point toView:self.superview] withEvent:event];
+    } else {
+        // Don't handle any touches
+        return NO;
+    }
 }
 
 @end
