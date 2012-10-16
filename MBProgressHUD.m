@@ -81,10 +81,12 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 @synthesize dimBackground;
 @synthesize graceTime;
 @synthesize minShowTime;
+@synthesize animationDuration;
 @synthesize graceTimer;
 @synthesize minShowTimer;
 @synthesize taskInProgress;
 @synthesize removeFromSuperViewOnHide;
+@synthesize blockTouches;
 @synthesize customView;
 @synthesize showStarted;
 @synthesize mode;
@@ -168,9 +170,11 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 		self.margin = 20.0f;
 		self.graceTime = 0.0f;
 		self.minShowTime = 0.0f;
+        self.animationDuration = 0.30;
 		self.removeFromSuperViewOnHide = NO;
 		self.minSize = CGSizeZero;
 		self.square = NO;
+        self.blockTouches = YES;
 		self.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin 
 								| UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 
@@ -293,7 +297,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 	// Fade in
 	if (animated) {
 		[UIView beginAnimations:nil context:NULL];
-		[UIView setAnimationDuration:0.30];
+		[UIView setAnimationDuration:self.animationDuration];
 		self.alpha = 1.0f;
 		if (animationType == MBProgressHUDAnimationZoomIn || animationType == MBProgressHUDAnimationZoomOut) {
 			self.transform = rotationTransform;
@@ -309,7 +313,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 	// Fade out
 	if (animated && showStarted) {
 		[UIView beginAnimations:nil context:NULL];
-		[UIView setAnimationDuration:0.30];
+		[UIView setAnimationDuration:self.animationDuration];
 		[UIView setAnimationDelegate:self];
 		[UIView setAnimationDidStopSelector:@selector(animationFinished:finished:context:)];
 		// 0.02 prevents the hud from passing through touches during the animation the hud will get completely hidden
@@ -721,6 +725,19 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 	if (animated) {
 		[UIView commitAnimations];
 	}
+}
+
+#pragma mark - Touch Handling
+
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
+{
+    if (self.blockTouches) {
+        // Capture all touches in the superview
+        return [self.superview pointInside:[self convertPoint:point toView:self.superview] withEvent:event];
+    } else {
+        // Don't handle any touches
+        return NO;
+    }
 }
 
 @end

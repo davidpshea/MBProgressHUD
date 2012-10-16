@@ -359,6 +359,14 @@ typedef void (^MBProgressHUDCompletionBlock)();
  */
 @property (atomic, assign) float minShowTime;
 
+
+/**
+ * The duration (in seconds) of the show and hide animations. 
+ * Changing this value will not affect animations in progress.
+ * Defaults to 0.3 seconds.
+ */
+@property (assign) NSTimeInterval animationDuration;
+
 /**
  * Indicates that the executed operation is in progress. Needed for correct graceTime operation.
  * If you don't set a graceTime (different than 0.0) this does nothing.
@@ -399,6 +407,12 @@ typedef void (^MBProgressHUDCompletionBlock)();
  * Force the HUD dimensions to be equal if possible. 
  */
 @property (atomic, assign, getter = isSquare) BOOL square;
+
+/**
+ * Blocks touches from reaching the containing view. 
+ * Defaults to YES. 
+ */
+@property (assign) BOOL blockTouches;
 
 @end
 
