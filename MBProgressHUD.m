@@ -81,7 +81,8 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 @synthesize dimBackground;
 @synthesize graceTime;
 @synthesize minShowTime;
-@synthesize animationDuration;
+@synthesize animationDurationShow;
+@synthesize animationDurationHide;
 @synthesize graceTimer;
 @synthesize minShowTimer;
 @synthesize taskInProgress;
@@ -97,6 +98,14 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 #if NS_BLOCKS_AVAILABLE
 @synthesize completionBlock;
 #endif
+
+
+// Helper function to set both animation times at once
+- (void) setAnimationDuration:(NSTimeInterval)interval
+{
+	animationDurationHide = interval;
+	animationDurationShow = interval;
+}
 
 #pragma mark - Class methods
 
@@ -169,7 +178,8 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 		self.margin = 20.0f;
 		self.graceTime = 0.0f;
 		self.minShowTime = 0.0f;
-        self.animationDuration = 0.30;
+        self.animationDurationShow = 0.30;
+        self.animationDurationHide = 0.30;
 		self.removeFromSuperViewOnHide = NO;
 		self.minSize = CGSizeZero;
 		self.square = NO;
@@ -295,7 +305,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 	// Fade in
 	if (animated) {
 		[UIView beginAnimations:nil context:NULL];
-		[UIView setAnimationDuration:self.animationDuration];
+		[UIView setAnimationDuration:self.animationDurationShow];
 		self.alpha = 1.0f;
 		if (animationType == MBProgressHUDAnimationZoomIn || animationType == MBProgressHUDAnimationZoomOut) {
 			self.transform = rotationTransform;
@@ -311,7 +321,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 	// Fade out
 	if (animated && showStarted) {
 		[UIView beginAnimations:nil context:NULL];
-		[UIView setAnimationDuration:self.animationDuration];
+		[UIView setAnimationDuration:self.animationDurationHide];
 		[UIView setAnimationDelegate:self];
 		[UIView setAnimationDidStopSelector:@selector(animationFinished:finished:context:)];
 		// 0.02 prevents the hud from passing through touches during the animation the hud will get completely hidden

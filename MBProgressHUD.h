@@ -371,7 +371,8 @@ typedef void (^MBProgressHUDCompletionBlock)();
  * Changing this value will not affect animations in progress.
  * Defaults to 0.3 seconds.
  */
-@property (assign) NSTimeInterval animationDuration;
+@property (assign) NSTimeInterval animationDurationShow;
+@property (assign) NSTimeInterval animationDurationHide;
 
 /**
  * Indicates that the executed operation is in progress. Needed for correct graceTime operation.
